@@ -1,0 +1,17 @@
+# 1. Dipendenze e Costrutti di Node.js
+node_modules/
+/dist/
+/build/
+
+# 2. File di Configurazione Locali
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# 3. Log e File di Sistema/Debug
+npm-debug.log*
+yarn-error.log*
+*.log
+*.sqlite
+/tmp/
