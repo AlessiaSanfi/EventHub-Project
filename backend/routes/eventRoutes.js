@@ -1,39 +1,60 @@
+/**
+ * @file Rotte per la Gestione degli Eventi.
+ * @description Definisce gli endpoint per la lettura (pubblica), creazione, modifica, cancellazione, iscrizione e segnalazione degli eventi, applicando il middleware di protezione dove necessario.
+ */
+
 const express = require('express');
 const router = express.Router();
 const { 
-  getEvents, 
-  getEvent, 
-  createEvent, 
-  updateEvent, 
-  deleteEvent,
-  attendEvent,
-  unattendEvent,
-  reportEvent
+  getEvents, 
+  getEvent, 
+  createEvent, 
+  updateEvent, 
+  deleteEvent,
+  attendEvent,
+  unattendEvent,
+  reportEvent
 } = require('../controllers/eventController');
 const { protect } = require('../middleware/auth'); // Importa il middleware di protezione
 
-// Rotte Pubbliche (Eventi visibili a tutti)
+// -------------------------------------------------------------------
+// Rotte BASE: /api/events
+// -------------------------------------------------------------------
+
 router.route('/')
-  .get(getEvents) // GET /api/events: Lista Eventi Pubblici
+  // GET /api/events: Ottiene tutti gli eventi pubblici (Accesso Pubblico)
+  .get(getEvents) 
+  // POST /api/events: Crea un nuovo evento (Richiede Autenticazione)
+  .post(protect, createEvent); 
+
+
+// -------------------------------------------------------------------
+// Rotte Dettaglio e Azioni: /api/events/:id
+// -------------------------------------------------------------------
 
 router.route('/:id')
-  .get(getEvent) // GET /api/events/:id: Dettagli singolo evento
+  // GET /api/events/:id: Ottiene i dettagli di un singolo evento (Accesso Pubblico)
+  .get(getEvent) 
+  // PUT /api/events/:id: Aggiorna un evento (Richiede Autenticazione)
+  .put(protect, updateEvent) 
+  // DELETE /api/events/:id: Cancella un evento (Richiede Autenticazione)
+  .delete(protect, deleteEvent); 
 
-// Rotta per la Segnalazione (Protetta)
-router.route('/:id/report')
-  .post(protect, reportEvent); // POST /api/events/:id/report: Segnala Evento
 
-// Rotte Protette (Richiedono JWT)
-router.route('/')
-  .post(protect, createEvent); // POST /api/events: Crea Evento (Solo Utente Loggato)
+// -------------------------------------------------------------------
+// Rotte Azioni Secondarie (Richiedono Autenticazione)
+// -------------------------------------------------------------------
 
-router.route('/:id')
-  .put(protect, updateEvent)    // PUT /api/events/:id: Modifica Evento (Solo Creatore/Admin)
-  .delete(protect, deleteEvent); // DELETE /api/events/:id: Cancella Evento (Solo Creatore/Admin)
-
-// Rotte Protette per Iscrizione/Cancellazione
+// Iscrizione / Cancellazione Iscrizione
 router.route('/:id/attend')
-  .post(protect, attendEvent)    // POST /api/events/:id/attend: Iscrizione
-  .delete(protect, unattendEvent); // DELETE /api/events/:id/attend: Cancellazione iscrizione
+  // POST /api/events/:id/attend: Iscrizione all'evento
+  .post(protect, attendEvent) 
+  // DELETE /api/events/:id/attend: Cancellazione iscrizione
+  .delete(protect, unattendEvent); 
+
+// Segnalazione Evento
+router.route('/:id/report')
+  // POST /api/events/:id/report: Segnala l'evento
+  .post(protect, reportEvent); 
 
 module.exports = router;

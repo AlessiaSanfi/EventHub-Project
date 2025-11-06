@@ -1,17 +1,20 @@
 # 1. Dipendenze e Costrutti di Node.js
-node_modules/
+/node_modules
 /dist/
 /build/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# 2. File di Configurazione Locali
+# 2. File di Configurazione Locali e Sicurezza
 .env
-.env.*
+.env.local
 .DS_Store
 Thumbs.db
 
 # 3. Log e File di Sistema/Debug
-npm-debug.log*
-yarn-error.log*
 *.log
 *.sqlite
 /tmp/
+/upload_tmp/ 
+# (/upload_tmp/) se gestisco upload temporanei

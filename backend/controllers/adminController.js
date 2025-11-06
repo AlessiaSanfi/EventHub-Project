@@ -1,26 +1,19 @@
-// backend/controllers/adminController.js
+/**
+ * @file Controllore per le operazioni di Amministrazione.
+ * @description Gestisce le rotte protette da ruolo 'amministratore', permettendo la gestione di utenti, eventi e segnalazioni (CRUD e moderazione).
+ */
 
 const User = require('../models/User');
 const Event = require('../models/Event');
-// Nota: Userai il modello Event e User per moderare
+const Report = require('../models/Report'); // <<< Importato per gestione segnalazioni
 
-// Funzione Helper per controllare il ruolo (assicura che sia 'amministratore')
-// Anche se la rotta è protetta, è una buona prassi rifare il controllo qui.
-const checkAdmin = (req, res) => {
-    if (req.user.role !== 'amministratore') {
-        return res.status(403).json({ message: 'Accesso negato. Richiede ruolo amministratore.' });
-    }
-    return true;
-};
 
 // @route   GET /api/admin/users
-// @desc    Ottieni tutti gli utenti registrati
+// @desc    Ottengo tutti gli utenti registrati
 // @access  Private (Solo Amministratore)
 exports.getUsers = async (req, res, next) => {
     try {
-        if (checkAdmin(req, res) !== true) return;
-
-        // Ottieni tutti gli utenti escludendo la password
+        // Ottengo tutti gli utenti escludendo la password
         const users = await User.find().select('-password');
         
         res.status(200).json({
@@ -34,29 +27,22 @@ exports.getUsers = async (req, res, next) => {
 };
 
 // @route   PUT /api/admin/users/:id/block
-// @desc    Blocca/Sblocca un utente
+// @desc    Blocco/Sblocco un utente
 // @access  Private (Solo Amministratore)
 exports.toggleUserBlock = async (req, res, next) => {
     try {
-        if (checkAdmin(req, res) !== true) return;
-
         const user = await User.findById(req.params.id).select('+role');
         
         if (!user) {
             return res.status(404).json({ message: 'Utente non trovato.' });
         }
 
-        // Impedisci all'admin di bloccare se stesso
+        // Impedisco all'admin di bloccare se stesso
         if (user._id.toString() === req.user.id.toString()) {
             return res.status(400).json({ message: 'Non puoi bloccare il tuo account amministratore.' });
         }
 
-        // Toggle della proprietà 'isBlocked' (che potremmo aggiungere in models/User.js)
-        // Per semplicità, in questo esempio modifichiamo il ruolo a un ruolo fittizio 'bloccato'
-        // NOTA: Aggiungi un campo `isBlocked: { type: Boolean, default: false }` in User.js per un approccio corretto
-        // Qui simuleremo il blocco cambiando il ruolo (Metodo meno pulito, ma rapido per l'esame)
-        
-        // Simulo la logica di blocco/sblocco:
+        // Logica di blocco/sblocco usando il ruolo 'bloccato'
         const currentRole = user.role;
         const newRole = (currentRole === 'bloccato') ? 'utente' : 'bloccato';
 
@@ -78,8 +64,6 @@ exports.toggleUserBlock = async (req, res, next) => {
 // @access  Private (Solo Amministratore)
 exports.deleteEventAsAdmin = async (req, res, next) => {
     try {
-        if (checkAdmin(req, res) !== true) return;
-
         const event = await Event.findById(req.params.id);
 
         if (!event) {
@@ -98,4 +82,55 @@ exports.deleteEventAsAdmin = async (req, res, next) => {
     }
 };
 
-// Nota: Qui potresti aggiungere getReportedEvents e resolveReport
+// ----------------------------------------------------
+// GESTIONE SEGNALAZIONI (REQUISITO C)
+// ----------------------------------------------------
+
+// @route   GET /api/admin/reports
+// @desc    Ottengo tutte le segnalazioni aperte/irrisolte
+// @access  Private (Solo Amministratore)
+exports.getReportedEvents = async (req, res, next) => {
+    try {
+        // Cerca tutte le segnalazioni che non sono state risolte
+        const reports = await Report.find({ isResolved: false })
+            .populate('event', 'title creator')
+            .populate('reportedBy', 'username');
+
+        res.status(200).json({
+            success: true,
+            count: reports.length,
+            data: reports
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Errore nel recupero delle segnalazioni.', error: err.message });
+    }
+};
+
+// @route   PUT /api/admin/reports/:id/resolve
+// @desc    Marchia una segnalazione come risolta
+// @access  Private (Solo Amministratore)
+exports.resolveReport = async (req, res, next) => {
+    try {
+        let report = await Report.findById(req.params.id);
+
+        if (!report) {
+            return res.status(404).json({ message: 'Segnalazione non trovata.' });
+        }
+
+        if (report.isResolved) {
+             return res.status(400).json({ message: 'Questa segnalazione è già stata risolta.' });
+        }
+
+        report.isResolved = true;
+        report.resolvedBy = req.user.id; // L'ID dell'amministratore che risolve
+        await report.save();
+
+        res.status(200).json({
+            success: true,
+            message: `Segnalazione #${report._id} marcata come risolta.`,
+            data: report
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Errore nel marcare la segnalazione come risolta.', error: err.message });
+    }
+};

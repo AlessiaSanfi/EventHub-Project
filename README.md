@@ -8,9 +8,9 @@ Questo progetto è stato sviluppato per dimostrare competenze nell'architettura 
 
 L'obiettivo principale di EventHub è fornire un'esperienza utente completa attraverso l'implementazione dei seguenti moduli:
 
-1.  **Gestione Utenti e Sicurezza (Requisito A):** Autenticazione protetta con ruoli distinti (`utente`, `amministratore`).
-2.  **Gestione Eventi Avanzata (Requisito B):** CRUD completo per gli eventi, con sistemi di iscrizione/cancellazione, capienza e filtri dinamici.
-3.  **Comunicazione in Tempo Reale (Requisito C):** Chat per evento e un sistema di notifica live.
+1.  **Gestione Utenti e Sicurezza (Requisito A):** Autenticazione protetta con ruoli distinti (`utente`, `amministratore`).
+2.  **Gestione Eventi Avanzata (Requisito B):** CRUD completo per gli eventi, con sistemi di iscrizione/cancellazione, capienza e filtri dinamici.
+3.  **Comunicazione in Tempo Reale (Requisito C):** Chat per evento e un sistema di notifica live.
 
 ---
 
@@ -33,7 +33,7 @@ Il backend è organizzato secondo un modello modulare che separa le responsabili
 * **`routes/`:** Definizione degli endpoint API.
 * **`middleware/auth.js`:** Logica di protezione e autorizzazione tramite ruoli.
 * **`socket/socketManager.js`:** Gestione centralizzata delle connessioni e degli eventi Socket.IO.
-* **`utils/`:** Funzioni helper (JWT, Nodemailer).
+* **`utils/`:** Funzioni helper (**Nodemailer** e altre utlità non critiche. **Nota:** La logica JWT è nel modello `User`).
 
 ---
 
@@ -45,14 +45,14 @@ Le seguenti funzionalità chiave sono state sviluppate per soddisfare i requisit
 
 | Funzionalità | Descrizione Tecnica | Requisito |
 | :--- | :--- | :--- |
-| **Autenticazione Sicura** | Utilizzo di **bcryptjs** per l'hashing delle password e **JWT** per la gestione delle sessioni. | A |
+| **Autenticazione Sicura** | Utilizzo di **bcryptjs** per l'hashing delle password e **JWT** per la gestione delle sessioni (metodo di istanza nel modello `User`). | A |
 | **Recupero Password** | Implementazione del flusso completo con generazione di **Token Temporaneo** (`crypto` nativo) e invio email tramite **Nodemailer**. | A (Opzionale) |
 | **Dashboard Utente** | Endpoint dedicati (`/api/users/me/*`) per visualizzare gli eventi **creati** e gli eventi **a cui si è iscritti** dall'utente corrente. | A |
 
 ### II. Gestione Eventi Avanzata
 
 | Funzionalità | Descrizione Tecnica | Requisito |
-
+| :--- | :--- | :--- |
 | **CRUD & Controllo Accessi** | Creazione, Lettura, Aggiornamento e Cancellazione con verifica che solo il **Creatore** possa modificare l'evento. | B |
 | **Filtri Dinamici** | Endpoint `/api/events` supporta query avanzate per **filtri** (es. `category=Musica`), **ordinamento** (`sort=-date`) e **paginazione** (`page`/`limit`). | B |
 | **Iscrizione con Capienza** | Logica di iscrizione (`/attend`) che verifica e rispetta il limite massimo di partecipanti (`capacity`). | B |
@@ -60,7 +60,7 @@ Le seguenti funzionalità chiave sono state sviluppate per soddisfare i requisit
 ### III. Tempo Reale e Moderazione
 
 | Funzionalità | Descrizione Tecnica | Requisito |
-
+| :--- | :--- | :--- |
 | **Notifiche Live (Utente)** | Utilizzo di **Socket.IO** per inviare notifiche istantanee al **Creatore** dell'evento quando un utente si iscrive o annulla l'iscrizione. | C |
 | **Segnalazioni Eventi** | Endpoint `/report` che crea un record nel DB (`Report.js`) e utilizza **Socket.IO** per inviare un **Avviso Live** a tutti gli amministratori connessi. | C |
 | **Chat per Evento** | Implementazione di stanze (`socket.join(eventId)`) per isolare la comunicazione tra i partecipanti di un singolo evento. | C |
@@ -70,9 +70,9 @@ Le seguenti funzionalità chiave sono state sviluppate per soddisfare i requisit
 
 ## Istruzioni per l'Avvio
 
-1.  **Clonare il Repository:** `git clone https://aws.amazon.com/it/what-is/repo/`
-2.  **Installare Backend:** `cd backend && npm install`
-3.  **Configurare Variabili d'Ambiente:** Creare un file `.env` nella directory `backend` e configurare le variabili (es. `MONGODB_URI`, `JWT_SECRET`, `SMTP_USER`, ecc.).
-4.  **Avviare il Server:** `npm run dev` (utilizzando nodemon)
-    * Il server API sarà disponibile su `http://localhost:3000/api`.
-    * Il server Socket.IO sarà attivo sulla stessa porta.
+1.  **Clonare il Repository:** `git clone https://aws.amazon.com/it/what-is/repo/` (Sostituire con il vero URL del repository)
+2.  **Installare Backend:** `cd backend && npm install`
+3.  **Configurare Variabili d'Ambiente:** Creare un file `.env` nella directory `backend` e configurare le variabili necessarie, in particolare: `MONGODB_URI`, `JWT_SECRET`, `SMTP_USER`, `SMTP_PASSWORD`, e `CLIENT_URL`.
+4.  **Avviare il Server:** `npm run dev` (utilizzando nodemon)
+    * Il server API sarà disponibile su **`http://localhost:8080/api`** (o la porta specificata nel file `.env`).
+    * Il server Socket.IO sarà attivo sulla stessa porta.
