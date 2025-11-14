@@ -19,21 +19,21 @@ const {
 router.use(protect);
 router.use(authorize('amministratore')); // Applica il controllo del ruolo a tutte le rotte sottostanti
 
-// Gestione Utenti
+// 1. GESTIONE UTENTI
 // GET /api/admin/users
 router.route('/users')
     .get(getUsers);
 
 // PUT /api/admin/users/:id/block
 router.route('/users/:id/block')
-    .put(toggleUserBlock); // Blocca/Sblocca
+    .put(toggleUserBlock); // Blocca/sblocca
 
-// Gestione Eventi (Cancellazione Forzata)
+// 2. GESTIONE EVENTI (cancellazione forzata)
 // DELETE /api/admin/events/:id
 router.route('/events/:id')
     .delete(deleteEventAsAdmin);
 
-// Gestione Segnalazioni
+// 3. GESTIONE SEGNALAZIONI
 // GET /api/admin/reports
 router.route('/reports')
     .get(getReportedEvents);

@@ -15,7 +15,7 @@ const { protect } = require('../middleware/auth'); // Middleware di protezione
 // Tutte le rotte sotto /api/users/me richiedono l'autenticazione
 router.use(protect);
 
-// Dashboard Utente e Dettagli Profilo
+// DASHBOARD UTENTE E DETTAGLI PROFILO
 
 // GET /api/users/me/created-events: Ottieni gli eventi creati dall'utente
 router.get('/me/created-events', getCreatedEvents);
@@ -24,6 +24,6 @@ router.get('/me/created-events', getCreatedEvents);
 router.get('/me/attending-events', getAttendingEvents);
 
 // PUT /api/users/me: Aggiorna i dettagli del profilo utente
-router.put('/me', updateProfile); // Aggiunta la rotta per l'aggiornamento del profilo
+router.put('/me', updateProfile); // Rotta per l'aggiornamento del profilo
 
 module.exports = router;

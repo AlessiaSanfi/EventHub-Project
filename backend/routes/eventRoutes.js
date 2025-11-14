@@ -5,7 +5,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { 
+const { // Importa i controller degli eventi
   getEvents, 
   getEvent, 
   createEvent, 

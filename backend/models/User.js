@@ -34,11 +34,11 @@ const UserSchema = new mongoose.Schema({
         select: false // Importante: non restituita di default
     },
     // Ruolo dell'utente (utilizzato per l'autorizzazione).
-    role: {
-        type: String,
-        enum: ['utente', 'amministratore', 'bloccato'],
-        default: 'utente'
-    },
+role: {
+        type: String,
+        enum: ['user', 'admin', 'bloccato'], // 'user' (utente) e 'admin' (amministratore)
+        default: 'user'
+    },
     // Timestamp di creazione.
     createdAt: {
         type: Date,

@@ -1,100 +1,70 @@
 /**
  * @file Server di Avvio Principale (EventHub Backend).
- * @description Inizializza l'applicazione Express, la connessione a MongoDB, integra Socket.IO e configura i middleware e le rotte principali.
+ * @description Gestisce l'avvio del server HTTP/Socket.IO e la connessione a MongoDB. 
+ * La configurazione di Express (middleware e rotte) è importata da app.js.
  */
 
 // Carica le variabili d'ambiente dal file .env
 require('dotenv').config();
 
-const express = require('express');
 const mongoose = require('mongoose');
-const http = require('http');           // Modulo HTTP di Node.js
-const { Server } = require('socket.io'); // Classe Server di Socket.IO
-const cors = require('cors');             // Middleware CORS per Express
-const helmet = require('helmet');         // Middleware Helmet per sicurezza
+const http = require('http');
+const { Server } = require('socket.io'); 
+const { setIoInstance } = require('./socket/socketManager');
 
-// Importa le rotte
-const authRoutes = require('./routes/authRoutes'); 
-const eventRoutes = require('./routes/eventRoutes');
-const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const { setIoInstance } = require('./socket/socketManager'); // Import del Socket Manager
+// Importa l'istanza di Express configurata da app.js
+const app = require('./app'); 
 
-const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080; 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // -------------------------------------------------------------------
 // 1. CONFIGURAZIONE SOCKET.IO & SERVER HTTP
 // -------------------------------------------------------------------
+
+// Crea il server HTTP usando l'istanza di Express
 const server = http.createServer(app); 
 
+// Configura l'istanza di Socket.IO per ascoltare il server HTTP
 const io = new Server(server, {
-    // CORS per Socket.IO (Deve corrispondere all'URL del Frontend)
-    cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:3000', 
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
-    }
+    // CORS per Socket.IO
+    cors: {
+        origin: process.env.CLIENT_URL || 'http://localhost:3000', 
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+    }
 });
 
 // Passa l'istanza IO al gestore esterno
 setIoInstance(io); 
 
 // -------------------------------------------------------------------
-// 2. MIDDLEWARE DI SICUREZZA E PARSING
+// 2. CONNESSIONE AL DB E AVVIO SERVER (SOLO SE NON IN AMBIENTE TEST)
 // -------------------------------------------------------------------
 
-// Protezione base contro vulnerabilità web note
-app.use(helmet()); 
+// Avvia il server SOLO se NON siamo in ambiente di test
+if (process.env.NODE_ENV !== 'test') {
+    mongoose.connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 45000,
+    })
+    .then(() => {
+        console.log('----------------------------------------------------');
+        console.log('✅ Connesso al database MongoDB');
 
-// Gestione delle richieste CORS per le API REST (deve essere prima delle rotte!)
-app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true // Se usi cookie o sessioni JWT nel frontend
-}));
+        // Inizializza l'ascolto del Server
+        server.listen(PORT, () => { 
+            console.log(`🚀 Server Node.js in esecuzione su http://localhost:${PORT}`);
+            console.log('----------------------------------------------------');
+        });
+    }) 
+    .catch((err) => {
+        console.log('----------------------------------------------------');
+        console.error('❌ Errore di connessione al database:', err.message);
+        console.error('FATAL: Verifica MONGODB_URI nel file .env.');
+        console.log('----------------------------------------------------');
+        process.exit(1); 
+    });
+}
 
-// Parsing del corpo delle richieste in formato JSON
-app.use(express.json()); 
-
-// -------------------------------------------------------------------
-// 3. DEFINIZIONE DELLE ROUTES API
-// -------------------------------------------------------------------
-
-app.use('/api/auth', authRoutes); 
-app.use('/api/events', eventRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
-
-// Rotta di benvenuto (Root)
-app.get('/', (req, res) => {
-  res.status(200).json({ 
-    message: 'Benvenuto su EventHub API! Node.js Server attivo.',
-    status: 'online',
-    docs: '/api/docs' // Riferimento a una potenziale documentazione
-  });
-});
-
-
-// -------------------------------------------------------------------
-// 4. CONNESSIONE AL DB E AVVIO SERVER
-// -------------------------------------------------------------------
-
-mongoose.connect(MONGODB_URI) 
-  .then(() => {
-    console.log('----------------------------------------------------');
-    console.log('✅ Connesso al database MongoDB');
-
-    // Inizializza l'ascolto del Server usando l'istanza HTTP
-    server.listen(PORT, () => { 
-      console.log(`🚀 Server Node.js in esecuzione su http://localhost:${PORT}`);
-      console.log('----------------------------------------------------');
-    });
-  }) 
-  .catch((err) => {
-    console.log('----------------------------------------------------');
-    console.error('❌ Errore di connessione al database:', err.message);
-    console.error('FATAL: Verifica MONGODB_URI nel file .env.');
-    console.log('----------------------------------------------------');
-    process.exit(1); // Chiude il processo in caso di errore critico
-  });
+// Esporta il server per eventuali utilizzi esterni (non necessario per i test con supertest)
+module.exports = server;

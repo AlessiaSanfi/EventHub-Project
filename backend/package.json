@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' nodemon server.js"
+    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' nodemon server.js",
+    "test": "cross-env NODE_ENV=test npx jest --detectOpenHandles --testTimeout=15000"
   },
   "keywords": [
     "node",
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "nodemon": "^3.0.1"
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.4"
   }
 }

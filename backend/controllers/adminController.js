@@ -5,7 +5,7 @@
 
 const User = require('../models/User');
 const Event = require('../models/Event');
-const Report = require('../models/Report'); // <<< Importato per gestione segnalazioni
+const Report = require('../models/Report'); // Importato per gestione segnalazioni
 
 
 // @route   GET /api/admin/users
