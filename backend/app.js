@@ -57,11 +57,7 @@ app.get('/', (req, res) => {
 // GESTIONE DEGLI ERRORI (DA APPLICARE DOPO TUTTE LE ROTTE)
 // -------------------------------------------------------------------
 
-/**
- * Middleware di gestione degli errori finale. 
- * Questo deve essere l'ULTIMO app.use() chiamato.
- * Cattura tutti gli errori sollevati da next(err).
- */
+ // Middleware di gestione degli errori finale: cattura tutti gli errori sollevati da next(err).
 app.use(errorHandler);
 
 // Esporta l'istanza 'app' di Express

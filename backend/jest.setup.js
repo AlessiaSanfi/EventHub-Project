@@ -6,14 +6,15 @@
 const mongoose = require('mongoose');
 const path = require('path');
 
+// Importa i modelli che voglio pulire tra i test
+const User = require('./models/User'); 
+const Event = require('./models/Event');
+const Report = require('./models/Report');
+
 // Carica le variabili d'ambiente per i test
 require('dotenv').config({ 
     path: path.resolve(__dirname, '.env') 
 });
-
-// Importa i modelli che vuoi pulire tra i test
-const User = require('./models/User'); 
-const Event = require('./models/Event');
 
 // Tempo massimo per le operazioni di setup/teardown in millisecondi
 const SETUP_TIMEOUT = 60000; // Aumentato a 60 secondi
@@ -57,9 +58,11 @@ afterEach(async () => {
     if (shouldSkip) return;
 
     try {
+        // Svuota le collezioni (deleteMany senza filtri)
         await User.deleteMany({});
         await Event.deleteMany({});
-        // ... eventuali altre collezioni ...
+        await Report.deleteMany({});
+        
     } catch (error) {
         console.error('Errore durante la pulizia del DB:', error);
     }

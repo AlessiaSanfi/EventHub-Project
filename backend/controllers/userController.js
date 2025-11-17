@@ -22,7 +22,7 @@ exports.getCreatedEvents = async (req, res, next) => {
             data: events
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nel recupero degli eventi creati.', error: err.message });
+        next(err);
     }
 };
 
@@ -44,7 +44,7 @@ exports.getAttendingEvents = async (req, res, next) => {
             data: events
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nel recupero degli eventi a cui si è iscritti.', error: err.message });
+        next(err);
     }
 };
 
@@ -80,10 +80,6 @@ exports.updateProfile = async (req, res, next) => {
         });
 
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return res.status(400).json({ message: `Errore di validazione: ${messages.join(', ')}` });
-        }
-        res.status(500).json({ message: 'Errore durante l\'aggiornamento del profilo.', error: err.message });
+        next(err);
     }
 };

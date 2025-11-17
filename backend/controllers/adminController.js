@@ -22,7 +22,7 @@ exports.getUsers = async (req, res, next) => {
             data: users
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nel recupero degli utenti.', error: err.message });
+        next(err); // Invia l'errore al gestore centralizzato
     }
 };
 
@@ -55,7 +55,7 @@ exports.toggleUserBlock = async (req, res, next) => {
             data: user
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore durante il blocco utente.', error: err.message });
+        next(err); // Invia l'errore al gestore centralizzato
     }
 };
 
@@ -78,7 +78,7 @@ exports.deleteEventAsAdmin = async (req, res, next) => {
             data: {}
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nella cancellazione forzata dell\'evento.', error: err.message });
+        next(err); // Invia l'errore al gestore centralizzato
     }
 };
 
@@ -102,7 +102,7 @@ exports.getReportedEvents = async (req, res, next) => {
             data: reports
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nel recupero delle segnalazioni.', error: err.message });
+        next(err); // Invia l'errore al gestore centralizzato
     }
 };
 
@@ -131,6 +131,6 @@ exports.resolveReport = async (req, res, next) => {
             data: report
         });
     } catch (err) {
-        res.status(500).json({ message: 'Errore nel marcare la segnalazione come risolta.', error: err.message });
+        next(err); // Invia l'errore al gestore centralizzato
     }
 };

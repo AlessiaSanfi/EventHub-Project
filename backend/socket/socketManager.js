@@ -77,11 +77,6 @@ const sendNotificationToUser = (userId, notification) => {
 const sendNotificationToAdmins = (notification) => {
     if (!ioInstance) return false; 
     
-    // NOTA PER DOPO:
-    // Implementazione futura: 
-    // 1. Trovare gli ID degli amministratori dal DB
-    // 2. Iterare sugli admin e usare connectedUsers.get(adminId) per ottenere il socketId
-    // 3. Inviare: ioInstance.to(adminSocketId).emit('adminAlert', notification);
     console.log("Funzione di notifica admin chiamata. Implementazione DB necessaria.");
     return true; // Finge successo per ora
 };
