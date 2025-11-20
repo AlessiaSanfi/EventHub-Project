@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miei Eventi - EventHub</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: var(--spacing-2xl) 0;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .filter-bar {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-2xl);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .event-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-content {
+            padding: var(--spacing-lg);
+        }
+
+        .event-date-badge {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .event-title {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-dark);
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .event-meta {
+            display: flex;
+            gap: var(--spacing-lg);
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .event-actions a,
+        .event-actions button {
+            flex: 1;
+            text-align: center;
+            padding: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.past {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .status-badge.draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>📅 Miei Eventi</h1>
+                    <p style="margin-top: var(--spacing-md); opacity: 0.9;">Visualizza e gestisci i tuoi eventi</p>
+                </div>
+                <a href="create-event.html" class="btn btn-secondary">➕ Nuovo Evento</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <!-- FILTRI -->
+        <div class="filter-bar">
+            <div class="form-group">
+                <label for="searchInput">Cerca Evento</label>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Es: Conferenza Node.js"
+                    style="margin: 0;">
+            </div>
+
+            <div class="form-group">
+                <label for="categoryFilter">Categoria</label>
+                <select id="categoryFilter" style="margin: 0;">
+                    <option value="">Tutte le categorie</option>
+                    <option value="conferenza">Conferenza</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="festa">Festa/Social</option>
+                    <option value="sportivo">Evento Sportivo</option>
+                    <option value="culturale">Evento Culturale</option>
+                    <option value="aziendale">Aziendale</option>
+                    <option value="educativo">Educativo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="statusFilter">Stato</label>
+                <select id="statusFilter" style="margin: 0;">
+                    <option value="">Tutti gli stati</option>
+                    <option value="active">Attivi</option>
+                    <option value="past">Passati</option>
+                    <option value="draft">Bozza</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sortBy">Ordina per</label>
+                <select id="sortBy" style="margin: 0;">
+                    <option value="date-asc">Data (Ascendente)</option>
+                    <option value="date-desc">Data (Discendente)</option>
+                    <option value="name-asc">Nome (A-Z)</option>
+                    <option value="name-desc">Nome (Z-A)</option>
+                    <option value="participants">Partecipanti</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- EVENTS GRID -->
+        <div class="events-grid" id="eventsContainer">
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <div class="empty-state-icon">📭</div>
+                <h3>Nessun evento trovato</h3>
+                <p>Crea il tuo primo evento per iniziare!</p>
+                <a href="create-event.html" class="btn btn-primary" style="margin-top: var(--spacing-lg);">Crea Evento</a>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        checkAuth();
+
+        let allEvents = [];
+
+        async function loadEvents() {
+            try {
+                allEvents = await eventManager.getUserEvents();
+                displayEvents(allEvents);
+            } catch (error) {
+                console.error('Errore:', error);
+                showNotification('Errore nel caricamento degli eventi', 'error');
+            }
+        }
+
+        function displayEvents(events) {
+            const container = document.getElementById('eventsContainer');
+
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>Nessun evento trovato</h3>
+                        <p>Crea il tuo primo evento per iniziare!</p>
+                        <a href="create-event.html" class="btn btn-primary" style="margin-top: var(--spacing-lg);">Crea Evento</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = events.map(event => {
+                const eventDate = new Date(event.date);
+                const now = new Date();
+                const status = event.date < now ? 'past' : 'active';
+                const statusText = status === 'past' ? 'Passato' : 'Attivo';
+
+                return `
+                    <div class="event-card">
+                        <div class="event-image">
+                            ${event.imageUrl ? `<img src="${event.imageUrl}" alt="${event.title}">` : '📅'}
+                        </div>
+                        <div class="event-content">
+                            <div style="display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-md);">
+                                <span class="event-date-badge">${formatDateShort(event.date)}</span>
+                                <span class="status-badge ${status}">${statusText}</span>
+                            </div>
+                            <h3 class="event-title">${event.title}</h3>
+                            <div class="event-location">
+                                📍 ${event.location || 'Ubicazione non specificata'}
+                            </div>
+                            <div class="event-meta">
+                                <span>👥 ${event.participants?.length || 0} partecipanti</span>
+                                <span>⏱️ ${event.duration} min</span>
+                            </div>
+                            <div class="event-actions">
+                                <a href="event-detail.html?id=${event._id}" class="btn btn-primary" style="text-decoration: none; padding: var(--spacing-sm);">Visualizza</a>
+                                <a href="#" class="btn btn-outline" style="text-decoration: none; padding: var(--spacing-sm);" onclick="editEvent('${event._id}'); return false;">Modifica</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filtri e ricerca
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortBy').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            let filtered = [...allEvents];
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            const now = new Date();
+
+            // Ricerca
+            if (search) {
+                filtered = filtered.filter(e =>
+                    e.title.toLowerCase().includes(search) ||
+                    e.description.toLowerCase().includes(search)
+                );
+            }
+
+            // Categoria
+            if (category) {
+                filtered = filtered.filter(e => e.category === category);
+            }
+
+            // Stato
+            if (status) {
+                filtered = filtered.filter(e => {
+                    const isPast = e.date < now;
+                    return status === 'past' ? isPast : !isPast;
+                });
+            }
+
+            // Ordinamento
+            switch (sortBy) {
+                case 'date-asc':
+                    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'date-desc':
+                    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'name-asc':
+                    filtered.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'name-desc':
+                    filtered.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'participants':
+                    filtered.sort((a, b) => (b.participants?.length || 0) - (a.participants?.length || 0));
+                    break;
+            }
+
+            displayEvents(filtered);
+        }
+
+        function editEvent(eventId) {
+            window.location.href = `create-event.html?id=${eventId}`;
+        }
+
+        loadEvents();
+    </script>
+</body>
+</html>

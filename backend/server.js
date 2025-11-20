@@ -17,7 +17,6 @@ const connectDB = require('./utils/db'); // Importa il modulo di connessione al 
 const app = require('./app'); 
 
 const PORT = process.env.PORT || 8080; 
-// RIMOSSO: const MONGODB_URI = process.env.MONGODB_URI; // connectDB ora gestisce l'URI tramite config.js
 
 // -------------------------------------------------------------------
 // 1. CONFIGURAZIONE SOCKET.IO & SERVER HTTP
@@ -44,7 +43,6 @@ setIoInstance(io);
 
 // Avvia il server SOLO se NON siamo in ambiente di test
 if (process.env.NODE_ENV !== 'test') {
-    // Sostituzione dell'implementazione temporanea con la funzione connectDB
     connectDB() // Chiama la funzione asincrona per connettersi al DB
     .then(() => {
         // Dopo la connessione di successo (loggata in db.js)

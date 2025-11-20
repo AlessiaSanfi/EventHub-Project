@@ -71,7 +71,7 @@ afterEach(async () => {
 // Chiude la connessione al DB dopo che *tutti* i test sono stati eseguiti
 afterAll(async () => {
     try {
-        // Un controllo per assicurarmi che la connessione sia attiva
+        // Un controllo per assicurare che la connessione sia attiva
         if (mongoose.connection.readyState !== 0) { 
             await mongoose.connection.close();
             console.log("🔌 Disconnesso dal database di test.");

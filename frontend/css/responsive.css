@@ -1,0 +1,135 @@
+/* TABLET (768px - 1024px) */
+@media (max-width: 1024px) {
+    .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .hero-illustration {
+        font-size: 150px;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* MOBILE (320px - 767px) */
+@media (max-width: 768px) {
+    /* NAVBAR */
+    .main-nav {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 60px;
+        left: -100%;
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+        background: var(--white);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+        z-index: var(--z-dropdown);
+    }
+
+    .nav-links.nav-active {
+        left: 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+        padding: var(--spacing-md);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    /* DASHBOARD */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: var(--spacing-md);
+    }
+
+    /* EVENTS */
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-card {
+        padding: var(--spacing-md);
+    }
+
+    /* FORMS */
+    .form-group {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* SMALL MOBILE (320px - 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .main-nav .nav-brand a {
+        font-size: var(--font-size-lg);
+    }
+
+    .page-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .btn-lg {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-base);
+    }
+
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+}

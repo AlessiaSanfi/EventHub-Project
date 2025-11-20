@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EventHub</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: var(--spacing-lg);
+            min-height: 100vh;
+            background: var(--bg-color);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            height: fit-content;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .sidebar-profile {
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .profile-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            padding: var(--spacing-lg);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .dashboard-header h1 {
+            font-size: var(--font-size-2xl);
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+            margin-top: 4px;
+        }
+
+        /* EVENTS LIST */
+        .events-section h2 {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .event-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .event-date {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+        }
+
+        .event-month {
+            font-size: var(--font-size-sm);
+            opacity: 0.8;
+        }
+
+        .event-body {
+            padding: var(--spacing-lg);
+        }
+
+        .event-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-dark);
+        }
+
+        .event-location {
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .event-participants {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            background: var(--white);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                transition: var(--transition);
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="profileAvatar">👤</div>
+                <div class="profile-name" id="profileName">Nome Utente</div>
+                <div class="profile-email" id="profileEmail">email@example.com</div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-link active" data-page="dashboard">📊 Dashboard</a></li>
+                <li><a href="#" class="menu-link" data-page="events">📅 Miei Eventi</a></li>
+                <li><a href="create-event.html" class="menu-link">➕ Nuovo Evento</a></li>
+                <li><a href="profile.html" class="menu-link">👤 Profilo</a></li>
+                <li><a href="#" class="menu-link" data-page="admin">⚙️ Admin</a></li>
+                <li><a href="#" class="menu-link" id="logoutBtn">🚪 Esci</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="totalEvents">0</div>
+                    <div class="stat-label">Eventi Totali</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value" id="totalParticipants">0</div>
+                    <div class="stat-label">Partecipanti</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="upcomingEvents">0</div>
+                    <div class="stat-label">Prossimi Eventi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="avgAttendance">0%</div>
+                    <div class="stat-label">Partecipazione Media</div>
+                </div>
+            </div>
+
+            <!-- EVENTS LIST -->
+            <div class="events-section">
+                <h2>Prossimi Eventi</h2>
+                <div class="events-grid" id="eventsContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>Nessun evento trovato</h3>
+                        <p>Crea il tuo primo evento per iniziare!</p>
+                        <a href="create-event.html" class="btn btn-primary" style="margin-top: var(--spacing-lg);">Crea Evento</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // Proteggi la pagina
+        checkAuth();
+
+        // Carica i dati del profilo
+        function loadProfile() {
+            const user = auth.getUser();
+            if (user) {
+                document.getElementById('profileName').textContent = user.name || 'Utente';
+                document.getElementById('profileEmail').textContent = user.email || '';
+                document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
+            }
+        }
+
+        // Carica gli eventi al caricamento della pagina
+        async function loadDashboard() {
+            try {
+                const events = await eventManager.getUserEvents();
+                displayStats(events);
+                displayUpcomingEvents(events);
+            } catch (error) {
+                console.error('Errore nel caricamento degli eventi:', error);
+                showNotification('Errore nel caricamento dei dati', 'error');
+            }
+        }
+
+        // Mostra le statistiche
+        function displayStats(events) {
+            const now = new Date();
+            const upcoming = events.filter(e => new Date(e.date) > now);
+            const totalParticipants = events.reduce((sum, e) => sum + (e.participants?.length || 0), 0);
+
+            document.getElementById('totalEvents').textContent = events.length;
+            document.getElementById('upcomingEvents').textContent = upcoming.length;
+            document.getElementById('totalParticipants').textContent = totalParticipants;
+            
+            const avgAttendance = events.length > 0 
+                ? Math.round((totalParticipants / (events.length * 30)) * 100)
+                : 0;
+            document.getElementById('avgAttendance').textContent = avgAttendance + '%';
+        }
+
+        // Mostra gli eventi prossimi
+        function displayUpcomingEvents(events) {
+            const container = document.getElementById('eventsContainer');
+            const now = new Date();
+            const upcoming = events
+                .filter(e => new Date(e.date) > now)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 6);
+
+            if (upcoming.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>Nessun evento trovato</h3>
+                        <p>Crea il tuo primo evento per iniziare!</p>
+                        <a href="create-event.html" class="btn btn-primary" style="margin-top: var(--spacing-lg);">Crea Evento</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = upcoming.map(event => `
+                <div class="event-card" onclick="window.location.href='event-detail.html?id=${event._id}'">
+                    <div class="event-header">
+                        <div class="event-date">${new Date(event.date).getDate()}</div>
+                        <div class="event-month">${new Date(event.date).toLocaleDateString('it-IT', { month: 'short' })}</div>
+                    </div>
+                    <div class="event-body">
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-location">📍 ${event.location || 'Ubicazione non specificata'}</div>
+                        <div class="event-participants">
+                            👥 ${event.participants?.length || 0} partecipanti
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.logout();
+            window.location.href = '../index.html';
+        });
+
+        // Menu links
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.dataset.page;
+                if (page === 'events') {
+                    window.location.href = 'events.html';
+                } else if (page === 'admin') {
+                    window.location.href = 'admin.html';
+                }
+            });
+        });
+
+        // Inizializza
+        loadProfile();
+        loadDashboard();
+
+        // Ricarica ogni 30 secondi
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>

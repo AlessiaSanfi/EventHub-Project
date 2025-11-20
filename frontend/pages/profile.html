@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo - EventHub</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: var(--spacing-2xl) 0;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .page-header h1 {
+            font-size: var(--font-size-2xl);
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--spacing-2xl);
+        }
+
+        .profile-sidebar {
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+            text-align: center;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin: 0 auto var(--spacing-lg);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-avatar-large:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-avatar-large .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .profile-name-large {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .profile-email-large {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-weight: 700;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .profile-stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+        }
+
+        .profile-tabs {
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: var(--spacing-xl);
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: var(--spacing-md) 0;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .danger-zone {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .danger-zone h3 {
+            color: var(--error);
+            margin-bottom: var(--spacing-md);
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs-header {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="profile-container">
+            <!-- SIDEBAR -->
+            <aside class="profile-sidebar">
+                <div class="profile-avatar-large" id="profileAvatarLarge">
+                    👤
+                    <div class="upload-overlay">📷</div>
+                </div>
+                <div class="profile-name-large" id="profileNameLarge">Nome Utente</div>
+                <div class="profile-email-large" id="profileEmailLarge">email@example.com</div>
+
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="userEventCount">0</div>
+                        <div class="profile-stat-label">Eventi</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="userAttendingCount">0</div>
+                        <div class="profile-stat-label">Partecipazioni</div>
+                    </div>
+                </div>
+
+                <a href="dashboard.html" class="btn btn-outline" style="width: 100%;">← Torna alla Dashboard</a>
+            </aside>
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+
+            <!-- MAIN CONTENT -->
+            <div class="profile-tabs">
+                <div id="alertContainer"></div>
+
+                <!-- TABS HEADER -->
+                <div class="tabs-header">
+                    <button class="tab-button active" data-tab="info">Informazioni Personali</button>
+                    <button class="tab-button" data-tab="security">Sicurezza</button>
+                    <button class="tab-button" data-tab="preferences">Preferenze</button>
+                </div>
+
+                <!-- TAB 1: INFORMAZIONI PERSONALI -->
+                <div class="tab-content active" id="tab-info">
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Nome Completo</label>
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    name="name" 
+                                    placeholder="Il tuo nome">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    placeholder="tua@email.com" 
+                                    readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Telefono</label>
+                                <input 
+                                    type="tel" 
+                                    id="phone" 
+                                    name="phone" 
+                                    placeholder="+39 123 456 7890">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthDate">Data di Nascita</label>
+                                <input 
+                                    type="date" 
+                                    id="birthDate" 
+                                    name="birthDate">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio">Biografia</label>
+                            <textarea 
+                                id="bio" 
+                                name="bio" 
+                                placeholder="Raccontaci di te..."
+                                rows="4"
+                                maxlength="500"></textarea>
+                            <small style="color: var(--text-light);">
+                                <span id="bioCount">0</span>/500 caratteri
+                            </small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Città</label>
+                                <input 
+                                    type="text" 
+                                    id="location" 
+                                    name="location" 
+                                    placeholder="La tua città">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="website">Sito Web</label>
+                                <input 
+                                    type="url" 
+                                    id="website" 
+                                    name="website" 
+                                    placeholder="https://example.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: var(--spacing-2xl);">
+                            <button type="submit" class="btn btn-primary" id="updateProfileBtn">
+                                Salva Modifiche
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB 2: SICUREZZA -->
+                <div class="tab-content" id="tab-security">
+                    <form id="securityForm">
+                        <h3>Cambia Password</h3>
+                        <p style="color: var(--text-light); margin-bottom: var(--spacing-lg);">
+                            Inserisci la tua password attuale e la nuova password.
+                        </p>
+
+                        <div class="form-group">
+                            <label for="currentPassword">Password Attuale</label>
+                            <input 
+                                type="password" 
+                                id="currentPassword" 
+                                name="currentPassword" 
+                                required 
+                                placeholder="La tua password attuale">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newPassword">Nuova Password</label>
+                            <input 
+                                type="password" 
+                                id="newPassword" 
+                                name="newPassword" 
+                                required 
+                                placeholder="Almeno 8 caratteri">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Conferma Nuova Password</label>
+                            <input 
+                                type="password" 
+                                id="confirmNewPassword" 
+                                name="confirmNewPassword" 
+                                required 
+                                placeholder="Ripeti la nuova password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="updatePasswordBtn">
+                            Aggiorna Password
+                        </button>
+
+                        <hr style="margin: var(--spacing-2xl) 0; border: none; border-top: 1px solid var(--border-color);">
+
+                        <h3>Dispositivi Attivi</h3>
+                        <p style="color: var(--text-light); margin-bottom: var(--spacing-lg);">
+                            Esci da tutte

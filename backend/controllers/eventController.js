@@ -85,9 +85,9 @@ exports.getEvents = async (req, res, next) => {
         });
 
     } catch (err) {
-        // Gestione degli errori Mongoose/Logica: passa l'errore al middleware
-        next(err);
+        next(err);// Gestione degli errori Mongoose/Logica: passa l'errore al middleware
     }
+
 };
 
 
@@ -110,8 +110,7 @@ exports.getEvent = async (req, res, next) => {
             data: event
         });
     } catch (err) {
-        // La gestione di CastError (ID non valido) sarà gestita nell'errorHandler globale.
-        next(err); 
+        next(err); // La gestione di CastError (ID non valido) sarà gestita nell'errorHandler globale.
     }
 };
 
@@ -133,8 +132,7 @@ exports.createEvent = async (req, res, next) => {
         });
 
     } catch (err) {
-        // La gestione di ValidationError sarà gestita nell'errorHandler globale.
-        next(err);
+        next(err); // La gestione di ValidationError sarà gestita nell'errorHandler globale.
     }
 };
 
@@ -166,8 +164,7 @@ exports.updateEvent = async (req, res, next) => {
         });
 
     } catch (err) {
-        // La gestione di CastError e ValidationError sarà gestita nell'errorHandler globale.
-        next(err);
+        next(err); // La gestione di CastError e ValidationError sarà gestita nell'errorHandler globale.
     }
 };
 
@@ -197,8 +194,7 @@ exports.deleteEvent = async (req, res, next) => {
         });
 
     } catch (err) {
-        // La gestione di CastError sarà gestita nell'errorHandler globale.
-        next(err);
+        next(err); // La gestione di CastError sarà gestita nell'errorHandler globale.
     }
 };
 
@@ -280,7 +276,7 @@ exports.unattendEvent = async (req, res, next) => {
             return next(new ErrorResponse('Non eri iscritto a questo evento.', 400));
         }
 
-        // 2. Rimuovi l'utente dalla lista attendees
+        // 2. Rimuove l'utente dalla lista attendees
         event.attendees = event.attendees.filter(
             (attendeeId) => attendeeId.toString() !== userId.toString()
         );
@@ -306,8 +302,7 @@ exports.unattendEvent = async (req, res, next) => {
         });
 
     } catch (err) {
-        // Passa qualsiasi altro errore (es. CastError) al middleware centrale
-        next(err);
+        next(err); // Passa qualsiasi altro errore (es. CastError) al middleware centrale
     }
 };
 
@@ -350,7 +345,6 @@ exports.reportEvent = async (req, res, next) => {
         });
 
     } catch (err) {
-        // Passa qualsiasi altro errore (es. CastError) al middleware centrale
-        next(err);
+        next(err); // Passa qualsiasi altro errore (es. CastError) al middleware centrale
     }
 };

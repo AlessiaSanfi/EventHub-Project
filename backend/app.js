@@ -7,7 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-// Importa l'handler degli errori (NUOVO)
+// Importa l'handler degli errori
 const errorHandler = require('./middleware/errorHandler'); 
 
 // Importa le rotte

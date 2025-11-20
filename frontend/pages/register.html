@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+ <html lang="it">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Registrazione - EventHub</title>
+     <link rel="stylesheet" href="../css/variables.css">
+     <link rel="stylesheet" href="../css/style.css">
+     <link rel="stylesheet" href="../css/responsive.css">
+     <style>
+         body {
+             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             min-height: 100vh;
+         }
+ 
+         .auth-container {
+             width: 100%;
+             max-width: 400px;
+             padding: var(--spacing-md);
+         }
+ 
+         .auth-card {
+             background: var(--white);
+             padding: var(--spacing-2xl);
+             border-radius: var(--radius-xl);
+             box-shadow: var(--shadow-xl);
+         }
+ 
+         .auth-card h2 {
+             text-align: center;
+             color: var(--text-dark);
+             margin-bottom: var(--spacing-md);
+             font-size: var(--font-size-2xl);
+         }
+ 
+         .auth-form .btn {
+             width: 100%;
+             margin-top: var(--spacing-lg);
+         }
+ 
+         .auth-footer {
+             text-align: center;
+             margin-top: var(--spacing-lg);
+             color: var(--text-light);
+             font-size: var(--font-size-sm);
+         }
+ 
+         .auth-footer a {
+             color: var(--primary-color);
+             text-decoration: none;
+             font-weight: 600;
+         }
+ 
+         .password-strength {
+             margin-top: 4px;
+             height: 4px;
+             border-radius: 2px;
+             background: #e5e7eb;
+             overflow: hidden;
+         }
+ 
+         .password-strength-bar {
+             height: 100%;
+             width: 0%;
+             transition: all 0.3s ease;
+         }
+ 
+         .password-strength-weak { background: var(--error); width: 33%; }
+         .password-strength-medium { background: var(--warning); width: 66%; }
+         .password-strength-strong { background: var(--success); width: 100%; }
+ 
+         #alertContainer {
+             margin-bottom: var(--spacing-lg);
+         }
+     </style>
+ </head>
+ <body>
+     <div id="navbar-placeholder"></div>
+
+     <div class="auth-container">
+         <div class="auth-card">
+             <h2>📅 EventHub</h2>
+ 
+             <div id="alertContainer"></div>
+ 
+             <form id="registerForm" class="auth-form">
+                 <div class="form-group">
+                     <label for="name">Nome Completo</label>
+                     <input 
+                         type="text" 
+                         id="name" 
+                         name="name" 
+                         required 
+                         placeholder="Il tuo nome completo">
+                 </div>
+ 
+                 <div class="form-group">
+                     <label for="email">Email</label>
+                     <input 
+                         type="email" 
+                         id="email" 
+                         name="email" 
+                         required 
+                         placeholder="tua@email.com"
+                         autocomplete="email">
+                 </div>
+ 
+                 <div class="form-group">
+                     <label for="password">Password</label>
+                     <input 
+                         type="password" 
+                         id="password" 
+                         name="password" 
+                         required 
+                         placeholder="Almeno 8 caratteri"
+                         autocomplete="new-password">
+                     <div class="password-strength">
+                         <div class="password-strength-bar" id="strengthBar"></div>
+                     </div>
+                     <small id="strengthText" style="color: var(--text-light); font-size: 12px;"></small>
+                 </div>
+ 
+                 <div class="form-group">
+                     <label for="confirmPassword">Conferma Password</label>
+                     <input 
+                         type="password" 
+                         id="confirmPassword" 
+                         name="confirmPassword" 
+                         required 
+                         placeholder="Ripeti la password"
+                         autocomplete="new-password">
+                 </div>
+ 
+                 <button type="submit" class="btn btn-primary" id="submitBtn">
+                     Registrati
+                 </button>
+             </form>
+ 
+             <div class="auth-footer">
+                 <p>Hai già un account? <a href="login.html">Accedi qui</a></p>
+             </div>
+         </div>
+     </div>
+ 
+     <script type="module">
+         import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+         document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+         setupNavbar();
+     </script>
+     <script src="../js/api.js"></script>
+     <script src="../js/auth.js"></script>
+     <script src="../js/utils.js"></script>
+     <script>
+         // Reindirizza se già loggato
+         if (auth.isAuthenticated()) {
+             window.location.href = 'dashboard.html';
+         }
+ 
+         // Password strength indicator
+         document.getElementById('password').addEventListener('input', function() {
+             const password = this.value;
+             const strengthBar = document.getElementById('strengthBar');
+             const strengthText = document.getElementById('strengthText');
+ 
+             let strength = 0;
+             if (password.length >= 8) strength++;
+             if (/[A-Z]/.test(password)) strength++;
+             if (/[0-9]/.test(password)) strength++;
+             if (/[^A-Za-z0-9]/.test(password)) strength++;
+ 
+             strengthBar.className = 'password-strength-bar';
+             if (strength < 2) {
+                 strengthBar.classList.add('password-strength-weak');
+                 strengthText.textContent = 'Debole';
+             } else if (strength < 3) {
+                 strengthBar.classList.add('password-strength-medium');
+                 strengthText.textContent = 'Media';
+             } else {
+                 strengthBar.classList.add('password-strength-strong');
+                 strengthText.textContent = 'Forte';
+             }
+         });
+ 
+         document.getElementById('registerForm').addEventListener('submit', async (e) => {
+             e.preventDefault();
+ 
+             const name = document.getElementById('name').value.trim();
+             const email = document.getElementById('email').value.trim();
+             const password = document.getElementById('password').value;
+             const confirmPassword = document.getElementById('confirmPassword').value;
+             const submitBtn = document.getElementById('submitBtn');
+ 
+             // Validazioni
+             if (name.length < 3) {
+                 showAlert('Il nome deve contenere almeno 3 caratteri', 'error');
+                 return;
+             }
+ 
+             if (!isValidEmail(email)) {
+                 showAlert('Email non valida', 'error');
+                 return;
+             }
+ 
+             if (!isValidPassword(password)) {
+                 showAlert('La password deve contenere almeno 8 caratteri', 'error');
+                 return;
+             }
+ 
+             if (password !== confirmPassword) {
+                 showAlert('Le password non coincidono', 'error');
+                 return;
+             }
+ 
+             submitBtn.disabled = true;
+             submitBtn.innerHTML = '<span class="spinner"></span> Registrazione in corso...';
+ 
+             try {
+                 const result = await auth.register({
+                     name,
+                     email,
+                     password
+                 });
+ 
+                 if (result.success) {
+                     showAlert('✅ Registrazione riuscita! Reindirizzamento...', 'success');
+                     setTimeout(() => {
+                         window.location.href = 'dashboard.html';
+                     }, 1500);
+                 } else {
+                     showAlert('❌ ' + result.error, 'error');
+                     submitBtn.disabled = false;
+                     submitBtn.innerHTML = 'Registrati';
+                 }
+             } catch (error) {
+                 showAlert('❌ Errore: ' + error.message, 'error');
+                 submitBtn.disabled = false;
+                 submitBtn.innerHTML = 'Registrati';
+             }
+         });
+ 
+         function showAlert(message, type) {
+             const alertContainer = document.getElementById('alertContainer');
+             alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+         }
+     </script>
+ </body>
+ </html>

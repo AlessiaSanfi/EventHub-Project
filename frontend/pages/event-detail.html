@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli Evento - EventHub</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        .event-header-large {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: var(--spacing-2xl) 0;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .event-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-2xl);
+        }
+
+        .event-main {
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .event-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .event-image-large {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            margin-bottom: var(--spacing-2xl);
+            overflow: hidden;
+        }
+
+        .event-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-info-box {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            font-size: 24px;
+        }
+
+        .info-content h4 {
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .info-content p {
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .participants-section {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .participants-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--bg-color);
+            border-radius: var(--radius-md);
+        }
+
+        .participant-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .participant-info h5 {
+            font-size: var(--font-size-base);
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .participant-info small {
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .action-buttons .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            gap: var(--spacing-lg);
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: var(--spacing-md) 0;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: var(--transition);
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .description {
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .event-container {
+                grid-template-columns: 1fr;
+            }
+
+            .event-image-large {
+                height: 250px;
+                font-size: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div id="alertContainer" style="margin-bottom: var(--spacing-2xl);"></div>
+
+        <div class="event-container">
+            <!-- MAIN CONTENT -->
+            <div class="event-main">
+                <!-- IMAGE -->
+                <div class="event-image-large" id="eventImage">📅</div>
+
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="description">Descrizione</button>
+                    <button class="tab-button" data-tab="participants">Partecipanti</button>
+                    <button class="tab-button" data-tab="comments">Commenti</button>
+                </div>
+
+                <!-- TAB 1: DESCRIPTION -->
+                <div class="tab-content active" id="tab-description">
+                    <div class="description" id="eventDescription">
+                        Caricamento...
+                    </div>
+                </div>
+
+                <!-- TAB 2: PARTICIPANTS -->
+                <div class="tab-content" id="tab-participants">
+                    <div class="participants-list" id="participantsList">
+                        Caricamento...
+                    </div>
+                </div>
+
+                <!-- TAB 3: COMMENTS -->
+                <div class="tab-content" id="tab-comments">
+                    <div id="commentsList">
+                        Caricamento...
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <aside class="event-sidebar">
+                <!-- EVENT INFO -->
+                <div class="event-info-box">
+                    <div class="info-row">
+                        <div class="info-icon">📅</div>
+                        <div class="info-content">
+                            <h4>Data</h4>
+                            <p id="eventDate">-</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">⏱️</div>
+                        <div class="info-content">
+                            <h4>Ora</h4>
+                            <p id="eventTime">-</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">⏳</div>
+                        <div class="info-content">
+                            <h4>Durata</h4>
+                            <p id="eventDuration">-</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <h4>Luogo</h4>
+                            <p id="eventLocation">-</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">👥</div>
+                        <div class="info-content">
+                            <h4>Partecipanti</h4>
+                            <p id="eventParticipantCount">0</p>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-icon">🏷️</div>
+                        <div class="info-content">
+                            <h4>Categoria</h4>
+                            <p id="eventCategory">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>                    <button class="btn btn-primary" id="rsvpBtn">✅ Partecipa</button>
+                    <button class="btn btn-outline" id="shareBtn">📤 Condividi</button>
+                    <button class="btn btn-outline" id="reportBtn">🚩 Segnala</button>
+                </div>
+
+                <!-- ORGANIZER -->
+                <div class="event-info-box">
+                    <h4 style="margin-bottom: var(--spacing-md);">Organizzatore</h4>
+                    <div class="participant-item">
+                        <div class="participant-avatar" id="organizerAvatar">👤</div>
+                        <div class="participant-info">
+                            <h5 id="organizerName">-</h5>
+                            <small id="organizerEmail">-</small>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/utils.js"></script>
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+    <script src="../js/main.js"></script>
+    <script>
+        let eventId = new URLSearchParams(window.location.search).get('id');
+        let currentEvent = null;
+
+        async function loadEvent() {
+            if (!eventId) {
+                showAlert('ID evento non valido', 'error');
+                return;
+            }
+
+            try {
+                currentEvent = await eventManager.getEventById(eventId);
+                displayEvent(currentEvent);
+            } catch (error) {
+                showAlert('Errore nel caricamento dell\'evento: ' + error.message, 'error');
+            }
+        }
+
+        function displayEvent(event) {
+            const eventDate = new Date(event.date);
+
+            // Header
+            document.getElementById('eventTitle').textContent = event.title;
+
+            // Image
+            const imageDiv = document.getElementById('eventImage');
+            if (event.imageUrl) {
+                imageDiv.innerHTML = `<img src="${event.imageUrl}" alt="${event.title}">`;
+            } else {
+                imageDiv.textContent = '📅';
+            }
+
+            // Description
+            document.getElementById('eventDescription').textContent = event.description;
+
+            // Event Info
+            document.getElementById('eventDate').textContent = formatDateShort(event.date);
+            document.getElementById('eventTime').textContent = formatTime(event.date);
+            document.getElementById('eventDuration').textContent = event.duration + ' minuti';
+            document.getElementById('eventLocation').textContent = event.location;
+            document.getElementById('eventCategory').textContent = event.category;
+            document.getElementById('eventParticipantCount').textContent = (event.participants?.length || 0) + ' / ' + event.capacity;
+
+            // Organizer
+            if (event.organizer) {
+                document.getElementById('organizerName').textContent = event.organizer.name;
+                document.getElementById('organizerEmail').textContent = event.organizer.email;
+                document.getElementById('organizerAvatar').textContent = event.organizer.name.charAt(0).toUpperCase();
+            }
+
+            // Participants
+            displayParticipants(event.participants || []);
+
+            // RSVP Button
+            const user = auth.getUser();
+            const isParticipating = event.participants?.some(p => p._id === user._id);
+            updateRsvpButton(isParticipating);
+        }
+
+        function displayParticipants(participants) {
+            const container = document.getElementById('participantsList');
+
+            if (participants.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-light);">Nessun partecipante ancora</p>';
+                return;
+            }
+
+            container.innerHTML = participants.map(p => `
+                <div class="participant-item">
+                    <div class="participant-avatar">${p.name.charAt(0).toUpperCase()}</div>
+                    <div class="participant-info">
+                        <h5>${p.name}</h5>
+                        <small>${p.email}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateRsvpButton(isParticipating) {
+            const btn = document.getElementById('rsvpBtn');
+            if (isParticipating) {
+                btn.textContent = '❌ Annulla Partecipazione';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            } else {
+                btn.textContent = '✅ Partecipa';
+                btn.classList.add('btn-primary');
+                btn.classList.remove('btn-outline');
+            }
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById(`tab-${tab}`).classList.add('active');
+            });
+        });
+
+        // RSVP
+        document.getElementById('rsvpBtn').addEventListener('click', async () => {
+            try {
+                const user = auth.getUser();
+                const isParticipating = currentEvent.participants?.some(p => p._id === user._id);
+
+                if (isParticipating) {
+                    await eventManager.leaveEvent(eventId);
+                    showAlert('❌ Hai cancellato la tua partecipazione', 'info');
+                } else {
+                    await eventManager.joinEvent(eventId);
+                    showAlert('✅ Ti sei iscritto all\'evento!', 'success');
+                }
+
+                loadEvent();
+            } catch (error) {
+                showAlert('❌ Errore: ' + error.message, 'error');
+            }
+        });
+
+        // Share
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const shareUrl = window.location.href;
+            copyToClipboard(shareUrl);
+        });
+
+        // Report
+        document.getElementById('reportBtn').addEventListener('click', () => {
+            const reason = prompt('Segnala questo evento. Motivo:');
+            if (reason) {
+                showAlert('✅ Grazie per la segnalazione! Il nostro team la esaminerà.', 'success');
+            }
+        });
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        loadEvent();
+    </script>
+</body>
+</html>

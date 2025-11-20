@@ -1,0 +1,65 @@
+:root {
+    /* COLORI PRIMARI */
+    --primary-color: #6366f1;       /* Indigo */
+    --primary-light: #818cf8;
+    --primary-dark: #4f46e5;
+    
+    /* COLORI SECONDARI */
+    --secondary-color: #ec4899;     /* Pink */
+    --secondary-light: #f472b6;
+    --secondary-dark: #be185d;
+    
+    /* COLORI NEUTRI */
+    --bg-color: #ededfa;
+    --bg-dark: #1f2937;
+    --text-dark: #111827;
+    --text-light: #6b7280;
+    --border-color: #e5e7eb;
+    --white: #ffffff;
+    
+    /* COLORI STATUS */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+    
+    /* SPAZIATURE */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    
+    /* FONT */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 24px;
+    --font-size-2xl: 32px;
+    --font-size-3xl: 48px;
+    
+    /* SHADOW */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    
+    /* BORDER RADIUS */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+    
+    /* TRANSIZIONI */
+    --transition: all 0.3s ease;
+    --transition-fast: all 0.15s ease;
+    
+    /* Z-INDEX */
+    --z-navbar: 1000;
+    --z-modal: 2000;
+    --z-dropdown: 500;
+}

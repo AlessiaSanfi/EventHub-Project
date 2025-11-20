@@ -11,7 +11,7 @@ const initSocketIO = (io) => {
         console.log(`Un utente si è connesso via Socket.ID: ${socket.id}`);
 
         // ---------------------------------------------------------------
-        // 1. GESTIONE CHAT EVENTO 💬
+        // 1. GESTIONE CHAT EVENTO 
         // ---------------------------------------------------------------
         socket.on('joinEventChat', (eventId) => {
             socket.join(eventId); // Aggiunge il socket alla "stanza" dell'evento
@@ -19,8 +19,7 @@ const initSocketIO = (io) => {
         });
 
         socket.on('sendMessage', ({ eventId, userId, username, message }) => {
-            // Invia il messaggio a tutti i membri della stanza (chat) INCLUSO chi lo invia, 
-            // se il client non lo aggiunge da sé. Per escludere: usa socket.to(eventId)
+            // Invia il messaggio a tutti i membri della stanza (chat) INCLUSO chi lo invia, se il client non lo aggiunge da sé. Per escludere: usa socket.to(eventId)
             io.to(eventId).emit('receiveMessage', { 
                 eventId,
                 userId,
@@ -32,7 +31,7 @@ const initSocketIO = (io) => {
 
 
         // ---------------------------------------------------------------
-        // 2. GESTIONE NOTIFICHE (Registrazione Utente) 🔔
+        // 2. GESTIONE NOTIFICHE (Registrazione Utente)
         // ---------------------------------------------------------------
         socket.on('registerUser', (userId) => {
             // Registra l'ID Utente associato al Socket ID corrente

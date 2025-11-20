@@ -17,7 +17,7 @@ const connectDB = async () => {
             socketTimeoutMS: 45000,         
         });
 
-        // Logga la connessione solo se non siamo in ambiente di test (dove il logging è gestito da jest.setup.js)
+        // Logga la connessione solo se non sono in ambiente di test (dove il logging è gestito da jest.setup.js)
         if (config.NODE_ENV !== 'test') {
             console.log(`MongoDB Connected: ${conn.connection.host}`);
         }

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - Gestione Eventi</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Gestisci i tuoi eventi con facilità</h2>
+            <p>Crea, organizza e condividi eventi straordinari. Tutto in un'unica piattaforma.</p>
+            <div class="hero-buttons">
+                <a href="pages/login.html" class="btn btn-primary btn-lg">Inizia Ora</a>
+                <a href="#features" class="btn btn-outline btn-lg">Scopri di Più</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-illustration">📊</div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Caratteristiche Principali</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Crea Eventi</h3>
+                    <p>Organizza eventi con tutte le informazioni necessarie in pochi click.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Gestisci Partecipanti</h3>
+                    <p>Invita amici, traccia RSVP e gestisci le liste di partecipazione.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Chat Real-time</h3>
+                    <p>Comunica con i partecipanti in tempo reale durante l'evento.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Statistiche</h3>
+                    <p>Visualizza analitiche dettagliate sui tuoi eventi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Notifiche</h3>
+                    <p>Ricevi notifiche istantanee su aggiornamenti importanti.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Sicurezza</h3>
+                    <p>I tuoi dati sono protetti con crittografia SSL.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Perché EventHub?</h2>
+                    <p>EventHub è la soluzione completa per organizzare eventi di qualsiasi tipo. Che si tratti di riunioni professionali, feste private o conferenze, ti forniamo tutti gli strumenti necessari.</p>
+                    <ul class="about-list">
+                        <li>✅ Interfaccia intuitiva e facile da usare</li>
+                        <li>✅ Supporto 24/7</li>
+                        <li>✅ Integrazione con social media</li>
+                        <li>✅ Gratuito per iniziare</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <div class="about-illustration">🎉</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>EventHub</h3>
+                <p>La piattaforma per gestire i tuoi eventi.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Link Utili</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Termini di Servizio</a></li>
+                    <li><a href="#">Contatti</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Social</h4>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EventHub. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from './js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

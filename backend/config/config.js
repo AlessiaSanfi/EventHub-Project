@@ -14,7 +14,7 @@ const config = {
 
 // 3. Logica Condizionale per l'URI del Database
 if (config.NODE_ENV === 'test') {
-    // Usa la variabile di test (TEST_MONGODB_URI dal tuo .env)
+    // Usa la variabile di test
     config.MONGO_URI = process.env.TEST_MONGODB_URI; 
 } else {
     // Usa la variabile di sviluppo/produzione

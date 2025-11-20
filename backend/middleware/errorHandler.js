@@ -38,8 +38,6 @@ const errorHandler = (err, req, res, next) => {
     res.status(statusCode).json({
         success: false,
         message: message
-        // NOTA: Aggiungi l'oggetto 'stack' solo in ambiente di sviluppo per debug
-        // stack: process.env.NODE_ENV === 'production' ? null : err.stack
     });
 };
 

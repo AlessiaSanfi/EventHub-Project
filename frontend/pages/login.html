@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EventHub</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 400px;
+            padding: var(--spacing-md);
+        }
+
+        .auth-card {
+            background: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .auth-card h2 {
+            text-align: center;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-2xl);
+        }
+
+        .auth-card p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: var(--spacing-xl);
+            font-size: var(--font-size-sm);
+        }
+
+        .auth-form .btn {
+            width: 100%;
+            margin-top: var(--spacing-lg);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-footer p {
+            margin: var(--spacing-md) 0;
+        }
+
+        #alertContainer {
+            margin-bottom: var(--spacing-lg);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>📅 EventHub</h2>
+            <p>Accedi al tuo account</p>
+
+            <div id="alertContainer"></div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="tua@email.com"
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        placeholder="La tua password"
+                        autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    Accedi
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Non hai un account? <a href="register.html">Registrati qui</a></p>
+                <p><a href="#">Password dimenticata?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script type="module">
+        import { getNavbarHTML, setupNavbar } from '../js/navbar.js';
+        document.getElementById('navbar-placeholder').innerHTML = getNavbarHTML();
+        setupNavbar();
+    </script>
+     <script src="../js/main.js"></script>
+    <script>
+        // Reindirizza se già loggato
+        if (auth.isAuthenticated()) {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validazione
+            if (!isValidEmail(email)) {
+                showAlert('Email non valida', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAlert('La password deve contenere almeno 6 caratteri', 'error');
+                return;
+            }
+
+            // Disabilita il bottone
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Accesso in corso...';
+
+            try {
+                const result = await auth.login(email, password);
+
+                if (result.success) {
+                    showAlert('✅ Login riuscito! Reindirizzamento...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    showAlert('❌ ' + result.error, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Accedi';
+                }
+            } catch (error) {
+                showAlert('❌ Errore durante il login: ' + error.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Accedi';
+            }
+        });
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>

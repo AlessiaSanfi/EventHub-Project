@@ -57,7 +57,7 @@ exports.updateProfile = async (req, res, next) => {
         const fieldsToUpdate = {
             username: req.body.username,
             email: req.body.email,
-            // Non permettiamo di modificare il ruolo o la password qui
+            // Non permetto di modificare il ruolo o la password qui
         };
 
         // Rimuovi i campi non definiti per evitare aggiornamenti a null/undefined

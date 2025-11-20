@@ -95,8 +95,8 @@ exports.login = async (req, res, next) => {
         });
 
     } catch (err) {
-        // Passa l'errore al middleware centrale
-        next(err); 
+
+        next(err); // Passa l'errore al middleware centrale
     }
 };
 
@@ -139,9 +139,7 @@ exports.forgotPassword = async (req, res, next) => {
     await user.save({ validateBeforeSave: false }); // Ignora le validazioni standard
 
     // 3. Crea il link per il reset da inviare via email
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/resetpassword/${resetToken}`; 
-
-// NOTA PER DOPO: In produzione, questo dovrebbe puntare al frontend per gestire la UI di reset.
+    const resetUrl = `${process.env.CLIENT_URL}/resetpassword/${resetToken}`; 
 
     const message = `Hai richiesto il reset della password. Per favore, clicca sul link sottostante per completare il processo:\n\n ${resetUrl}`;
 
@@ -214,8 +212,7 @@ exports.resetPassword = async (req, res, next) => {
                 role: user.role,
             }
         });
-    } catch (err) {
-        // Passa l'errore al middleware centrale
-        next(err);
+    } catch (err) { 
+        next(err); // Passa l'errore al middleware centrale
     }
 };
