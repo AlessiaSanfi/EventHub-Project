@@ -11,7 +11,8 @@ const navbarHTML = `
             <li><a href="/pages/create-event.html">Crea Evento</a></li>
             <li><a href="/pages/profile.html">Profilo</a></li>
             <li id="admin-link" style="display: none;"><a href="/pages/admin.html">Admin</a></li>
-            <li class="logout-item"><a href="#" id="logout-button">Logout</a></li>
+            <li class="login-item"><a href="/pages/login.html" id="login-button">Accedi</a></li>
+            <li class="register-item"><a href="#" id="logout-button">Registrati</a></li>
         </ul>
         <div class="nav-toggle" id="nav-toggle">
             <span></span>
@@ -36,11 +37,10 @@ export function setupNavbar() {
         });
     }
 
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', (e) => {
+    const loginButton = document.getElementById('login-button');
+    if (loginButton) {
+        loginButton.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.removeItem('token');
             window.location.href = '/pages/login.html';
         });
     }

@@ -3,115 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventHub - Gestione Eventi</title>
+    <title>EventHub</title>
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/motivec-theme.css">
+    <!-- Potrebbero essere necessari altri link CSS per icone o slider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
 
     <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Gestisci i tuoi eventi con facilità</h2>
-            <p>Crea, organizza e condividi eventi straordinari. Tutto in un'unica piattaforma.</p>
-            <div class="hero-buttons">
-                <a href="pages/login.html" class="btn btn-primary btn-lg">Inizia Ora</a>
-                <a href="#features" class="btn btn-outline btn-lg">Scopri di Più</a>
-            </div>
+    <section class="hero-motivec">
+        <div class="hero-background">
+            <!-- Immagine di sfondo -->
+
         </div>
-        <div class="hero-image">
-            <div class="hero-illustration">📊</div>
+        <div class="hero-content-motivec">
+            <h1 class="hero-title">EventHub<br>TRASFORMIAMO LE IDEE IN ESPERIENZE</h1>
+            <a href="#" class="btn-show-more">SCOPRI DI PIÙ</a>
+        </div>
+        <div class="hero-navigation">
+            <button class="nav-arrow left-arrow">&#10094;</button>
+            <button class="nav-arrow right-arrow">&#10095;</button>
         </div>
     </section>
 
-    <!-- FEATURES SECTION -->
-    <section id="features" class="features">
+    <!-- EVENTI DI QUESTA SETTIMANA SECTION -->
+    <section class="news-section">
         <div class="container">
-            <h2>Caratteristiche Principali</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3>Crea Eventi</h3>
-                    <p>Organizza eventi con tutte le informazioni necessarie in pochi click.</p>
+            <h2 class="section-title">Questa settimana</h2>
+            <div class="news-grid">
+                <!-- News Card 1 -->
+                <div class="news-card">
+                    <img src="https://via.placeholder.com/300x200" alt="News Image 1">
+                    <div class="news-card-content">
+                        <span class="news-tag">March 1, 2019</span>
+                        <h3>Why did Google create Alphabet?</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nisl eget urna.</p>
+                        <a href="#" class="read-more">Read More &#8594;</a>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Gestisci Partecipanti</h3>
-                    <p>Invita amici, traccia RSVP e gestisci le liste di partecipazione.</p>
+                <!-- News Card 2 -->
+                <div class="news-card">
+                    <img src="https://via.placeholder.com/300x200" alt="News Image 2">
+                    <div class="news-card-content">
+                        <span class="news-tag">March 1, 2019</span>
+                        <h3>Hacking Your Product Leader Career</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nisl eget urna.</p>
+                        <a href="#" class="read-more">Read More &#8594;</a>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💬</div>
-                    <h3>Chat Real-time</h3>
-                    <p>Comunica con i partecipanti in tempo reale durante l'evento.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Statistiche</h3>
-                    <p>Visualizza analitiche dettagliate sui tuoi eventi.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔔</div>
-                    <h3>Notifiche</h3>
-                    <p>Ricevi notifiche istantanee su aggiornamenti importanti.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3>Sicurezza</h3>
-                    <p>I tuoi dati sono protetti con crittografia SSL.</p>
+                <!-- News Card 3 -->
+                <div class="news-card">
+                    <img src="https://via.placeholder.com/300x200" alt="News Image 3">
+                    <div class="news-card-content">
+                        <span class="news-tag">March 1, 2019</span>
+                        <h3>Technology Can Help Save Our Environment</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nisl eget urna.</p>
+                        <a href="#" class="read-more">Read More &#8594;</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ABOUT SECTION -->
-    <section id="about" class="about">
+    <!-- PROSSIMI EVENTI SECTION -->
+    <section class="featured-events-section">
         <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>Perché EventHub?</h2>
-                    <p>EventHub è la soluzione completa per organizzare eventi di qualsiasi tipo. Che si tratti di riunioni professionali, feste private o conferenze, ti forniamo tutti gli strumenti necessari.</p>
-                    <ul class="about-list">
-                        <li>✅ Interfaccia intuitiva e facile da usare</li>
-                        <li>✅ Supporto 24/7</li>
-                        <li>✅ Integrazione con social media</li>
-                        <li>✅ Gratuito per iniziare</li>
-                    </ul>
+            <h2 class="section-title">I prossimi eventi</h2>
+            <div class="events-grid">
+                <!-- Event Card 1 -->
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Event Image 1">
+                    <div class="event-card-content">
+                        <h3>Entomology International Congress of Vancouver</h3>
+                        <p class="event-date-location">🗓️ Thu, 10 Dec 2023</p>
+                        <p class="event-organizer">Organized By: <a href="#">Set Your Vendor</a></p>
+                        <a href="#" class="btn-buy-now">BUY NOW</a>
+                    </div>
                 </div>
-                <div class="about-image">
-                    <div class="about-illustration">🎉</div>
+                <!-- Event Card 2 -->
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Event Image 2">
+                    <div class="event-card-content">
+                        <h3>Success Free Career & Meditation Classes</h3>
+                        <p class="event-date-location">🗓️ Thu, 10 Dec 2023</p>
+                        <p class="event-organizer">Organized By: <a href="#">Set Your Vendor</a></p>
+                        <a href="#" class="btn-buy-now">BUY NOW</a>
+                    </div>
+                </div>
+                <!-- Event Card 3 -->
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Event Image 3">
+                    <div class="event-card-content">
+                        <h3>Career Fair: Exclusive Hiring Event - New</h3>
+                        <p class="event-date-location">🗓️ Thu, 10 Dec 2023</p>
+                        <p class="event-organizer">Organized By: <a href="#">Set Your Vendor</a></p>
+                        <a href="#" class="btn-buy-now">BUY NOW</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENT OVERVIEW / STATISTICS SECTION -->
+    <section class="event-overview-section">
+        <div class="container">
+            <h2 class="section-title-hidden">Statistiche mensili</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">45+</span>
+                    <span class="stat-label">Eventi</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Partecipanti</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label">Locations</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">25+</span>
+                    <span class="stat-label">Ospiti speciali</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Le vostre recensioni</h2>
+            <div class="testimonials-grid">
+                <!-- Testimonial Card 1 -->
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nisl eget urna, ac imperdiet auctor. Donec enim, vel euismod faucibus, sem."</p>
+                    <p class="testimonial-author">Mahfuz Riad</p>
+                    <p class="testimonial-role">Analytics</p>
+                </div>
+                <!-- Testimonial Card 2 -->
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sed nisl eget urna, ac imperdiet auctor. Donec enim, vel euismod faucibus, sem."</p>
+                    <p class="testimonial-author">Johnny</p>
+                    <p class="testimonial-role">Manager</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-section">
-                <h3>EventHub</h3>
-                <p>La piattaforma per gestire i tuoi eventi.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Link Utili</h4>
+    <footer class="footer-motivec">
+        <div class="container footer-content-motivec">
+            <div class="footer-section-motivec contact-info">
+                <h3>Contact Info</h3>
                 <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Termini di Servizio</a></li>
-                    <li><a href="#">Contatti</a></li>
+                    <li><i class="fas fa-phone"></i> +(00) 456-789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Street, Los Angeles CA</li>
+                    <li><i class="fas fa-envelope"></i> admin@yourdomain.com</li>
+                </ul>
+                <div class="social-icons">
+                    <!-- Add social media icons here -->
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section-motivec useful-links">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">Registration</a></li>
+                    <li><a href="#">Schedule</a></li>
+                </ul>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Sponsors</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Blog</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h4>Social</h4>
+            <div class="footer-section-motivec recent-posts">
+                <h3>Recent Posts</h3>
                 <ul>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">New post title here</a><span>March 1, 2019</span></li>
+                    <li><a href="#">Another post title</a><span>March 1, 2019</span></li>
                 </ul>
+            </div>
+            <div class="footer-section-motivec newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get the latest updates.</p>
+                <form>
+                    <input type="email" placeholder="Your Email">
+                    <button type="submit">Signup</button>
+                </form>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 EventHub. Tutti i diritti riservati.</p>
+        <div class="footer-bottom-motivec">
+            <p>&copy; 2025 Motivec. Designed by <a href="#">YourCompany</a></p>
         </div>
     </footer>
 
